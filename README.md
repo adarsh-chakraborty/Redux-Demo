@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+## Install redux, react-redux and thunk
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+```
+npm i redux react-redux redux-thunk
+```
 
-## Available Scripts
+## Create a 2 folders
 
-In the project directory, you can run:
+- actions
+- reducers
 
-### `npm start`
+# Init Redux
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+In index.js file
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```javascript
+import { Provider } from 'react-redux';
+import { createStore, compose, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+```
 
-### `npm test`
+# Create Store
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+// import the reducers file.
 
-### `npm run build`
+// it accepts takes 2 parameters, 1st is the reducers
+const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+// wrap the application in provider component and pass the store to it.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# reducers.js
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+// import the reducers
+import reducer from './reducer';
 
-### `npm run eject`
+import {combineReducers} from 'redux';
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+export default combineReducers({reducer});
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# reducer.js
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+export default const reducer = (state = [],action) => {
+switch(action.type){
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+}
+}
 
-## Learn More
+## Dispatch action
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+import useDispatch
+import the action
+{getPost}
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+dispatch(getPost());
 
-### Code Splitting
+# actions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+// Action creators are function that return functions
 
-### Analyzing the Bundle Size
+// No async
+export const getPosts = () => {
+const action = { type: 'FETCH_ALL', payload: []}
+return action;
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+export const getPosts = () => async (dispatch) => {
 
-### Making a Progressive Web App
+// do something and dispatch the result
+dispatch({type: 'FETCH_ALL', payload: result});
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+// Consuming the data from redux store
 
-### Advanced Configuration
+// import useSelector from 'react-redux';
+const data = useSelector(state => state.key);
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Use Constants
 
-### Deployment
+Instead of typing identifier of the action types, we can create some constants in a file and export it.
+then,whevere ever we need it we can import and use it as we need.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+This helps us in easily identifying mis-spelled identifiers and can save hours of debugging. Trust me
 
-### `npm run build` fails to minify
+// constants.js
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```javascript
+export const FETCH_BOOKS = 'FETCH_BOOKS';
+```
+
+// reducer and dispatch Action
+
+```javascript
+import {FETCH_BOOKS} from './constants/constants';
+
+// ....
+switch (action.type){
+  CASE FETCH_BOOKS:
+  // .. do something
+}
+```
+
+## Redux DevTools
+
+Install Redux devtools extension dependency.
+
+```
+npm i -D redux-devtools-extension
+```
+
+// In index.js file, import composeWithDevTools Function
+
+```javascript
+import { composeWithDevTools } from ‘redux-devtools-extension’;
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+```
+
+We can get rid of the previous `compose` import.
+
+## Video Demo
+
+> https://youtu.be/8UvvTJRai8s
