@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Book from './components/Book';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { getBooks } from './actions/bookActions';
+
 const Books = () => {
-  const [books, setBooks] = useState([]);
+  const dispatch = useDispatch();
+
+  const data = useSelector((state) => state.bookReducer);
+
   useEffect(() => {
-    fetch('https://bookshelf.gq/api/books')
-      .then((res) => res.json())
-      .then((data) => {
-        setBooks(data.books);
-      });
-  }, []);
+    dispatch(getBooks());
+  }, [dispatch]);
   return (
     <div className="flex flex-col gap-4">
-      {books.map((book) => (
-        <Book book={book.book} author={book.author} />
+      {data.map((book) => (
+        <Book key={book._id} book={book.book} author={book.author} />
       ))}
     </div>
   );

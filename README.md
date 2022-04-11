@@ -74,6 +74,48 @@ dispatch({type: 'FETCH_ALL', payload: result});
 // import useSelector from 'react-redux';
 const data = useSelector(state => state.key);
 
+## Use Constants
+
+Instead of typing identifier of the action types, we can create some constants in a file and export it.
+then,whevere ever we need it we can import and use it as we need.
+
+This helps us in easily identifying mis-spelled identifiers and can save hours of debugging. Trust me
+
+// constants.js
+
+```javascript
+export const FETCH_BOOKS = 'FETCH_BOOKS';
+```
+
+// reducer and dispatch Action
+
+```javascript
+import {FETCH_BOOKS} from './constants/constants';
+
+// ....
+switch (action.type){
+  CASE FETCH_BOOKS:
+  // .. do something
+}
+```
+
+## Redux DevTools
+
+Install Redux devtools extension dependency.
+
+```
+npm i -D redux-devtools-extension
+```
+
+// In index.js file, import composeWithDevTools Function
+
+```javascript
+import { composeWithDevTools } from ‘redux-devtools-extension’;
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+```
+
+We can get rid of the previous `compose` import.
+
 ## Video Demo
 
-> https://www.youtube.com/watch?v=x-wvl8bwFpg&ab_channel=Adarsh
+> https://youtu.be/8UvvTJRai8s
